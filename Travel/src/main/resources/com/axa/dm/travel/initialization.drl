@@ -1,0 +1,12 @@
+package com.axa.dm.travel;
+
+import java.lang.Number;
+
+rule "Initialization"
+	dialect "mvel"
+	lock-on-active true
+	when
+		ProcessObject( $travel : travel != null )
+	then
+	    insert($travel);
+end
