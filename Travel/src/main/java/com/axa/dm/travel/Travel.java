@@ -68,8 +68,11 @@ public class Travel implements java.io.Serializable {
 	@org.kie.api.definition.type.Label("Total Premium Amount")
 	private java.math.BigDecimal totalPremiumAmount;
 
-	@org.kie.api.definition.type.Label(value = "Amount per person")
+	@org.kie.api.definition.type.Label("Amount per person")
 	private java.math.BigDecimal amtPerPerson;
+
+	@org.kie.api.definition.type.Label(value = "Processed discount")
+	private boolean processedDiscount;
 
 	public Travel() {
 	}
@@ -323,6 +326,14 @@ public class Travel implements java.io.Serializable {
 		this.amtPerPerson = amtPerPerson;
 	}
 
+	public boolean isProcessedDiscount() {
+		return this.processedDiscount;
+	}
+
+	public void setProcessedDiscount(boolean processedDiscount) {
+		this.processedDiscount = processedDiscount;
+	}
+
 	public Travel(java.lang.String travelPlan, java.lang.String travelCover,
 			java.lang.String travelType, java.lang.String travelStartDate,
 			java.lang.String travelEndDate, java.lang.String travelEnhanceFlag,
@@ -340,7 +351,7 @@ public class Travel implements java.io.Serializable {
 			java.math.BigDecimal discountAmount, java.lang.String maxDays,
 			java.math.BigDecimal discount, java.math.BigDecimal levy,
 			java.math.BigDecimal totalPremiumAmount,
-			java.math.BigDecimal amtPerPerson) {
+			java.math.BigDecimal amtPerPerson, boolean processedDiscount) {
 		this.travelPlan = travelPlan;
 		this.travelCover = travelCover;
 		this.travelType = travelType;
@@ -364,6 +375,7 @@ public class Travel implements java.io.Serializable {
 		this.levy = levy;
 		this.totalPremiumAmount = totalPremiumAmount;
 		this.amtPerPerson = amtPerPerson;
+		this.processedDiscount = processedDiscount;
 	}
 
 }

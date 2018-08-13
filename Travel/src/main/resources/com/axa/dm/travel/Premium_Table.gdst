@@ -42,19 +42,6 @@
                   <index>2147483647</index>
                 </expression>
                 <parameters/>
-                <fieldBinding>$discount</fieldBinding>
-                <factType>Travel</factType>
-                <fieldName>discount</fieldName>
-                <fieldType>BigDecimal</fieldType>
-              </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
-              <org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
-                <operator>!= null</operator>
-                <constraintValueType>0</constraintValueType>
-                <expression>
-                  <parts/>
-                  <index>2147483647</index>
-                </expression>
-                <parameters/>
                 <fieldBinding>$levy</fieldBinding>
                 <factType>Travel</factType>
                 <fieldName>levy</fieldName>
@@ -93,6 +80,51 @@
                         <name>travelNoOfPersonWithCard</name>
                         <classType>java.lang.String</classType>
                         <genericType>String</genericType>
+                      </next>
+                      <name>Travel</name>
+                      <classType>Travel</classType>
+                      <genericType>Travel</genericType>
+                      <factType>Travel</factType>
+                    </org.drools.workbench.models.datamodel.rule.ExpressionUnboundFact>
+                    <org.drools.workbench.models.datamodel.rule.ExpressionField reference="../org.drools.workbench.models.datamodel.rule.ExpressionUnboundFact/next"/>
+                  </parts>
+                  <index>2147483647</index>
+                </expLeftSide>
+              </org.drools.workbench.models.datamodel.rule.SingleFieldConstraintEBLeftSide>
+              <org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
+                <value>true</value>
+                <operator>==</operator>
+                <constraintValueType>1</constraintValueType>
+                <expression>
+                  <parts/>
+                  <index>2147483647</index>
+                </expression>
+                <parameters/>
+                <factType>Travel</factType>
+                <fieldName>processedDiscount</fieldName>
+                <fieldType>Boolean</fieldType>
+              </org.drools.workbench.models.datamodel.rule.SingleFieldConstraint>
+              <org.drools.workbench.models.datamodel.rule.SingleFieldConstraintEBLeftSide>
+                <value></value>
+                <constraintValueType>0</constraintValueType>
+                <expression>
+                  <parts/>
+                  <index>2147483647</index>
+                </expression>
+                <parameters/>
+                <fieldBinding>$discount</fieldBinding>
+                <factType>Travel</factType>
+                <fieldName>discount</fieldName>
+                <fieldType>BigDecimal</fieldType>
+                <expLeftSide>
+                  <binding>$discount</binding>
+                  <parts>
+                    <org.drools.workbench.models.datamodel.rule.ExpressionUnboundFact>
+                      <next class="org.drools.workbench.models.datamodel.rule.ExpressionField">
+                        <prev class="org.drools.workbench.models.datamodel.rule.ExpressionUnboundFact" reference="../.."/>
+                        <name>discount</name>
+                        <classType>BigDecimal</classType>
+                        <genericType>BigDecimal</genericType>
                       </next>
                       <name>Travel</name>
                       <classType>Travel</classType>
@@ -355,7 +387,12 @@
       <header>Finalize</header>
       <definition>
         <org.drools.workbench.models.datamodel.rule.FreeFormLine>
-          <text>$travel.setDiscountAmount($discount.multiply($travel.getPremiumAmount()));
+          <text>if ($discount != null){
+	$travel.setDiscountAmount($discount.multiply($travel.getPremiumAmount()));
+}
+else{
+	$travel.setDiscountAmount(BigDecimal.ZERO);
+}
 $travel.setLevyAmount($levy.multiply($travel.getPremiumAmount()));
 $travel.setTotalPremiumAmount($travel.getPremiumAmount().add($travel.getLevyAmount()).subtract($travel.getDiscountAmount()));
 
@@ -785,7 +822,7 @@ $travel.setTravelTotalPremiumAmount(&quot;$&quot; + df.format($travel.getTotalPr
         <isOtherwise>false</isOtherwise>
       </value>
       <value>
-        <valueNumeric>194</valueNumeric>
+        <valueNumeric>193</valueNumeric>
         <valueString></valueString>
         <dataType>NUMERIC_BIGDECIMAL</dataType>
         <isOtherwise>false</isOtherwise>

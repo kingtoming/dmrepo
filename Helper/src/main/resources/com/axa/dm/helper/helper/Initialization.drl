@@ -6,6 +6,7 @@ rule "Extract helper"
     when
         ProcessObject($helper:helper != null)
     then
+        System.out.println("Inserted helper");
         insert($helper);
 end
 
@@ -16,5 +17,6 @@ rule "Extrace Helper Details"
         ProcessObject(helper != null, $helperDetailsList : helper.helperDetails)
         $helperDetailsObj : HelperDetails() from $helperDetailsList
     then
+        System.out.println("Inserted helper details");
         insert($helperDetailsObj);
 end

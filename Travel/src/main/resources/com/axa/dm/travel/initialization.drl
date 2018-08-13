@@ -10,3 +10,12 @@ rule "Initialization"
 	then
 	    insert($travel);
 end
+
+rule "Check discount process"
+    dialect "mvel"
+    when
+        $travel : Travel(discount == null, processedDiscount == false)
+    then
+        $travel.setProcessedDiscount(true);
+        update($travel);
+end
