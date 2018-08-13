@@ -1,0 +1,20 @@
+package com.axa.dm.helper.helper;
+
+rule "Extract helper"
+    dialect "mvel"
+    lock-on-active true
+    when
+        ProcessObject($helper:helper != null)
+    then
+        insert($helper);
+end
+
+rule "Extrace Helper Details"
+    dialect "mvel"
+    lock-on-active true
+    when
+        ProcessObject(helper != null, $helperDetailsList : helper.helperDetails)
+        $helperDetailsObj : HelperDetails() from $helperDetailsList
+    then
+        insert($helperDetailsObj);
+end

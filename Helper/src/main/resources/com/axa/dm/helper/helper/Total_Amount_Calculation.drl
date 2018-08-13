@@ -1,0 +1,35 @@
+package com.axa.dm.helper.helper;
+
+import java.math.BigDecimal;
+
+rule "Calculation"
+    dialect "java"
+    when
+        $helper : Helper($premium : premium != null, $levy : levy != null, $helperList : helperDetails != null)
+        Number ($helperCount : intValue()) from accumulate ( HelperDetails() from $helperList, count(1) )
+        Number (intValue() == $helperCount) from accumulate (HelperDetails(optionalCover != null), count(1))
+        
+        $totalAmount : Number() from accumulate (
+            HelperDetails($optionalCover : optionalCover != null),
+            sum($premium.add($levy).add($optionalCover))
+        )
+        
+        $premiumAmount : Number() from accumulate (
+            HelperDetails($optionalCover : optionalCover != null),
+            sum($premium.add($optionalCover))
+        )
+        
+        $levyAmount : Number() from accumulate (
+            HelperDetails($optionalCover : optionalCover != null),
+            sum(BigDecimal.ZERO.add($levy))
+        )
+    then
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###.##");
+        BigDecimal totalAmount = new BigDecimal($totalAmount.toString());
+        BigDecimal premiumAmount = new BigDecimal($premiumAmount.toString());
+        BigDecimal levyAmount = new BigDecimal($levyAmount.toString());
+        $helper.setTotalPremiumAmount("$"+df.format(totalAmount));
+        $helper.setPremiumAmount("$"+df.format(premiumAmount));
+        $helper.setLevyAmount("$"+df.format(levyAmount));
+        
+end
